@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.11.3",
     "preact": "^10.19.6",
     "unistore": "^3.5.2"
   },
