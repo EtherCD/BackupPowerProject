@@ -4,6 +4,7 @@ import ChargeDisplay from "./components/ChargeDisplay";
 import { Provider } from "unistore/preact";
 import { infoStore } from "./store";
 import axios from "axios";
+import LoadDisplay from "./components/LoadDisplay";
 
 const URI = new URL(window.location + "").origin
   .replace("5173", "4002")
@@ -26,9 +27,18 @@ export function App() {
   return (
     <div>
       <Header />
-      <Provider store={infoStore}>
-        <ChargeDisplay />
-      </Provider>
+      <div
+        className={
+          "grid md:grid-cols-3 grid-rows-3 grid-cols-1 justify-items-center gap-10 my-10"
+        }
+      >
+        <Provider store={infoStore}>
+          <ChargeDisplay />
+        </Provider>
+        <Provider store={infoStore}>
+          <LoadDisplay />
+        </Provider>
+      </div>
     </div>
   );
 }

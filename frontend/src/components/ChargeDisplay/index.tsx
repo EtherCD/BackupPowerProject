@@ -3,7 +3,7 @@ import Gauge from "react-gaugejs";
 import { connect } from "unistore/preact";
 import { InfoStore } from "../../store/types";
 import { ChargeProps } from "./types";
-import { shortWatts } from "./utils";
+import { hoursToFormattedString, shortWatts } from "../../utils";
 
 class ChargeDisplay extends Component<ChargeProps> {
   currentRef = createRef<HTMLInputElement>();
@@ -52,10 +52,10 @@ class ChargeDisplay extends Component<ChargeProps> {
     return (
       <div
         className={
-          "relative flex-col shadow bg-slate-100 rounded w-96 m-10 h-80 border-2 border-lime-500"
+          "shadow bg-slate-100 rounded w-96 h-80 border-2 border-lime-500"
         }
       >
-        <h1 className={"text-center mb-2 text-xl  "}>Charge Display</h1>
+        <h1 className={"text-center mb-2 text-xl"}>Charge Display</h1>
         <div className={"absolute"}>
           <Gauge
             value={this.state.chargePercent}
@@ -108,8 +108,8 @@ class ChargeDisplay extends Component<ChargeProps> {
         <div className={"absolute text-center my-32 w-96"}>
           <p>{this.state.chargePercent}%</p>
           <p>
-            {shortWatts(this.state.chargeValue)}/
-            {shortWatts(this.props.capacity)}
+            {shortWatts(this.state.chargeValue)}h/
+            {shortWatts(this.props.capacity)}h
           </p>
           <p>
             <label style={{ color: "#00A4A7" }}>{this.props.voltage}V</label>{" "}
@@ -123,8 +123,7 @@ class ChargeDisplay extends Component<ChargeProps> {
           </p>
           <p className={"text-sm"}>
             Time it takes to charge the battery{" "}
-            {Math.floor(this.state.timeToChargeBattery)}h{" "}
-            {Math.floor(this.state.timeToChargeBattery / 60) % 60}m, with
+            {hoursToFormattedString(this.state.timeToChargeBattery)}, with
             current
           </p>
           <input
