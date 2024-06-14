@@ -5,4 +5,6 @@ export interface InfoStore {
   voltage: number;
   current: number;
   load: number;
+  maxLoad: number;
+  startTimestamp: number;
 }

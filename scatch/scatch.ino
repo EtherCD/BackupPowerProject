@@ -10,27 +10,16 @@ float old_time = 0;
 char ping_text[] = "r";
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(19200);
   old_time = millis();
 }
 
-void check_serial() {
-  static byte prev_am = 0;
-  static uint32_t tmr = 0;
-  byte am = Serial.available();
-  if (am != prev_am) {
-    prev_am = am;
-    tmr = millis();
-  }
-  if ((am  & millis() - tmr > 10) || am > 60) {
+void loop() {
+  if (Serial.available() > 1) {
     if (Serial.find(ping_text)) {
       Serial.println(total_w_consumed);
     }
   }
-}
-
-void loop() {
-  check_serial();
   if (simulation_active) {
     if (battery_capacity > total_w_consumed) {
       float delta_time = get_delta_time();

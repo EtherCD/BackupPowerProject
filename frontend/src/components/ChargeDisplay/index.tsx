@@ -5,13 +5,12 @@ import { InfoStore } from "../../store/types";
 import { ChargeProps } from "./types";
 import { shortWatts } from "./utils";
 
-class Charge extends Component<ChargeProps> {
+class ChargeDisplay extends Component<ChargeProps> {
   currentRef = createRef<HTMLInputElement>();
   state = {
     chargePercent: 100,
     chargeValue: 100,
     timeToChargeBattery: 0,
-    chargeCurrent: 6,
   };
 
   updateData() {
@@ -25,7 +24,10 @@ class Charge extends Component<ChargeProps> {
   }
 
   recalculate(charge?: number) {
-    const current = this.state.chargeCurrent;
+    let current = this.currentRef.current
+      ? parseInt(this.currentRef.current.value)
+      : 6;
+    if (current < 1 || Number.isNaN(current)) current = 1;
     this.setState({
       timeToChargeBattery:
         Math.round(
@@ -36,22 +38,21 @@ class Charge extends Component<ChargeProps> {
             100
         ) / 100,
     });
-    console.log((this.state.chargePercent / 100) * this.props.capacityInAh);
   }
 
   componentWillMount(): void {
     this.updateData();
   }
 
-  componentDidUpdate(): void {
-    this.updateData();
+  componentDidUpdate(prevProps: ChargeProps): void {
+    if (this.props != prevProps) this.updateData();
   }
 
   render() {
     return (
       <div
         className={
-          "relative flex-col shadow bg-slate-100 rounded w-96 m-10 h-72 border-2 border-lime-500"
+          "relative flex-col shadow bg-slate-100 rounded w-96 m-10 h-80 border-2 border-lime-500"
         }
       >
         <h1 className={"text-center mb-2 text-xl  "}>Charge Display</h1>
@@ -120,21 +121,20 @@ class Charge extends Component<ChargeProps> {
               {this.props.current}A
             </label>
           </p>
-          <p>
+          <p className={"text-sm"}>
             Time it takes to charge the battery{" "}
             {Math.floor(this.state.timeToChargeBattery)}h{" "}
             {Math.floor(this.state.timeToChargeBattery / 60) % 60}m, with
-            current{" "}
-            <input
-              type="number"
-              value={this.state.chargeCurrent}
-              onInput={(event) => {
-                this.setState((event.target! as HTMLInputElement).value);
-                event.preventDefault();
-                this.recalculate();
-              }}
-            />
+            current
           </p>
+          <input
+            type="number"
+            min={1}
+            step={1}
+            ref={this.currentRef}
+            defaultValue={"6"}
+            onInput={() => this.recalculate()}
+          />
         </div>
       </div>
     );
@@ -147,4 +147,4 @@ export default connect<{}, {}, InfoStore, ChargeProps>([
   "capacityInAh",
   "voltage",
   "current",
-])((props) => <Charge {...props} />);
+])((props) => <ChargeDisplay {...props} />);

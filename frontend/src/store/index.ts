@@ -2,10 +2,10 @@ import createStore from "unistore";
 import { InfoStore } from "./types";
 
 export const infoStore = createStore<InfoStore>({
-  consumed: 200,
-  capacity: 220 * 12.8,
-  capacityInAh: 220,
-  voltage: 12.8,
-  current: 18.3,
-  load: 220,
+  consumed: 0,
+  capacity: 60 * 12,
+  capacityInAh: 60,
+  voltage: 0,
+  current: 0,
+  load: 0,
 });

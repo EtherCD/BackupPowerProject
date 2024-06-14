@@ -10,5 +10,4 @@ export interface ChargeState {
   chargePercent: number;
   chargeValue: number;
   timeToChargeBattery: number;
-  chargeCurrent: number;
 }
